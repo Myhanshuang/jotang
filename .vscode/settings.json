@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "any": "cpp",
+        "expected": "cpp",
+        "optional": "cpp",
+        "variant": "cpp",
+        "iosfwd": "cpp",
+        "chrono": "cpp",
+        "typeindex": "cpp",
+        "typeinfo": "cpp"
+    }
+}
