@@ -7,7 +7,7 @@
 using namespace std;
 using namespace httplib;
 
-void list_directory(const char *path)
+void list_directory(const char *path) // 手写 ls
 {
     DIR *dir; // 来自 #include<dirent.h>
     // 声明一个指针，用于指向目录流
@@ -60,7 +60,7 @@ void handle_request(const Request &req, Response &res)
     if (!f) // 文件夹
     {
         chdir(file_path.c_str());
-        list_directory(".");
+        list_directory("."); // 获取文件夹里面的文件目录
         chdir("..");
         stringstream buffer;
         string output = file_path + "direction.txt";
@@ -68,7 +68,7 @@ void handle_request(const Request &req, Response &res)
         buffer << iffile.rdbuf();
         res.set_content(buffer.str(), "text/plain");
     }
-    else
+    else // 文件
     {
         // 读取
         ifstream ifile(file_path.c_str(), ios::binary);

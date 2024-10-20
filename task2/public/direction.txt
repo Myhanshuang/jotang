@@ -1,3 +1,5 @@
+video.webm
+image.png
 folder
 direction.txt
 new.txt
