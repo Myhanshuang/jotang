@@ -24,7 +24,7 @@ void list_directory(const char *path)
         perror("opendir");
         exit(EXIT_FAILURE);
     }
-    auto fp = fopen("/public/direction.txt", "w");
+    auto fp = fopen("direction.txt", "w");
     while ((entry = readdir(dir)) != NULL)
     { // 抓取该目录下的文件
         char full_path[1024];
@@ -39,7 +39,10 @@ void list_directory(const char *path)
         }
         if (entry->d_name[0] == '.')
             continue;
-        fprintf(fp, "%s\n", entry->d_name); // 文件名
+        int n = strlen(entry->d_name);
+        for (int i = 0; i < n; i++)
+            fprintf(fp, "%c", entry->d_name[i]); // 文件名
+        fprintf(fp, "\n");
     }
     fclose(fp);
     closedir(dir); // 关闭文件流
