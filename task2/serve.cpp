@@ -59,9 +59,7 @@ void handle_request(const Request &req, Response &res)
             f = 1;
     if (!f) // 文件夹
     {
-        chdir(file_path.c_str());
-        list_directory("."); // 获取文件夹里面的文件目录
-        chdir("..");
+        list_directory(file_path.c_str()); // 获取文件夹里面的文件目录
         stringstream buffer;
         string output = file_path + "direction.txt";
         ifstream iffile(output.c_str(), ios::binary);
