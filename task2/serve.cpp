@@ -7,8 +7,9 @@
 using namespace std;
 using namespace httplib;
 
-void list_directory(const char *path) // 手写 ls
+stringstream list_directory(const char *path) // 手写 ls
 {
+    stringstream buffer;
     DIR *dir; // 来自 #include<dirent.h>
     // 声明一个指针，用于指向目录流
     struct dirent *entry;
@@ -24,7 +25,6 @@ void list_directory(const char *path) // 手写 ls
         perror("opendir");
         exit(EXIT_FAILURE);
     }
-    auto fp = fopen("direction.txt", "w");
     while ((entry = readdir(dir)) != NULL)
     { // 抓取该目录下的文件
         char full_path[1024];
@@ -39,13 +39,10 @@ void list_directory(const char *path) // 手写 ls
         }
         if (entry->d_name[0] == '.')
             continue;
-        int n = strlen(entry->d_name);
-        for (int i = 0; i < n; i++)
-            fprintf(fp, "%c", entry->d_name[i]); // 文件名
-        fprintf(fp, "\n");
+        buffer << entry->d_name << '\n';
     }
-    fclose(fp);
     closedir(dir); // 关闭文件流
+    return buffer;
 }
 void handle_request(const Request &req, Response &res)
 {
@@ -59,12 +56,7 @@ void handle_request(const Request &req, Response &res)
             f = 1;
     if (!f) // 文件夹
     {
-        list_directory(file_path.c_str()); // 获取文件夹里面的文件目录
-        stringstream buffer;
-        string output = file_path + "direction.txt";
-        ifstream iffile(output.c_str(), ios::binary);
-        buffer << iffile.rdbuf();
-        res.set_content(buffer.str(), "text/plain");
+        res.set_content(list_directory(file_path.c_str()).str(), "text/plain");
     }
     else // 文件
     {
